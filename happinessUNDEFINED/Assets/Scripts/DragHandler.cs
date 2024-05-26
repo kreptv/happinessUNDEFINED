@@ -3,46 +3,53 @@ using UnityEngine.EventSystems;
 
 public class DragHandler : MonoBehaviour
 {
-
     private Vector3 offset;
     private bool isDragging = false;
 
     public bool inInventory = false;
-
-    //public CanvasGroup canvas;
 
     void Update()
     {
         // Check for mouse input
         if (Input.GetMouseButtonDown(0))
         {
-            // Check if we clicked on this object
-            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-            if (hit.collider != null && hit.collider.gameObject == gameObject)
+            // Create a ray from the camera through the mouse position
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            // Perform the raycast and check if we hit this object
+            if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == gameObject)
             {
+                Debug.Log("hit " + hit.collider.gameObject.name);
                 isDragging = true;
                 OnHandInventory.draggingItem = hit.collider.gameObject.GetComponent<Item>();
-                offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                OnHandInventory.draggingItem.gameObject.GetComponent<Collider2D>().enabled = false;
+                offset = gameObject.transform.position - hit.point;
+                OnHandInventory.draggingItem.gameObject.GetComponent<Collider>().enabled = false;
             }
         }
 
         // If dragging, update the object's position
         if (isDragging)
         {
-            Vector3 newPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + offset;
-            newPosition.z = -3; // Ensure the object stays in the 2D plane
-            transform.position = newPosition;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            // Perform the raycast, ignoring trigger colliders
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~0, QueryTriggerInteraction.Ignore))
+            {
+                Vector3 newPosition = hit.point + offset;
+                newPosition.y = gameObject.transform.position.y; // Ensure the object stays at its original y position
+                transform.position = newPosition;
+            }
         }
 
         // Stop dragging when the mouse button is released
         if (Input.GetMouseButtonUp(0) && isDragging)
         {
             isDragging = false;
-            OnHandInventory.draggingItem.gameObject.GetComponent<Collider2D>().enabled = true;
+            OnHandInventory.draggingItem.gameObject.GetComponent<Collider>().enabled = true;
             OnHandInventory.lastDraggedItem = OnHandInventory.draggingItem;
             OnHandInventory.draggingItem = null;
         }
     }
-
 }

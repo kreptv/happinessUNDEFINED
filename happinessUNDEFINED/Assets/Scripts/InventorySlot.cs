@@ -49,6 +49,7 @@ public class InventorySlot : EventTrigger, IBeginDragHandler, IDragHandler, IEnd
         this.gameObject.transform.GetChild(0).GetComponent<Item>().worldPrefab = Resources.Load(item.itemName, typeof(GameObject)) as GameObject;
         this.gameObject.transform.GetChild(0).GetComponent<Item>().collectable = item.collectable;
         this.gameObject.transform.GetChild(0).GetComponent<Item>().inInventory = true;
+        this.gameObject.transform.GetChild(0).GetComponent<Item>().dropPositionY = item.dropPositionY;
 
         return this.gameObject.transform.GetChild(0).GetComponent<Item>();
     }
@@ -91,7 +92,9 @@ public class InventorySlot : EventTrigger, IBeginDragHandler, IDragHandler, IEnd
             else // if we drop it in world space
             {
                 Debug.Log("Dropping in world space");
-                dropPosition.z = -3; // Ensure the item is dropped on the ground level
+                dropPosition = PlayerMovementScript.rb.gameObject.transform.position;
+                dropPosition.z -= 1;
+                dropPosition.y = containsItem.dropPositionY; // Ensure the item is dropped on the ground level
                 GameObject newInstance = Instantiate(containsItem.worldPrefab, dropPosition, Quaternion.identity);
                 newInstance.GetComponent<Item>().inInventory = false;
                 OnHandInventory.lastDraggedItem = newInstance.GetComponent<Item>();

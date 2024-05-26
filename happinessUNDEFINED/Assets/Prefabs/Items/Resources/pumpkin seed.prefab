@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6087393076393371361}
   - component: {fileID: 5936940084288067323}
-  - component: {fileID: 3072076035850891579}
   - component: {fileID: 3749851548829945129}
   - component: {fileID: 237331729317853832}
+  - component: {fileID: 8888882497304535880}
   m_Layer: 0
   m_Name: pumpkin seed
   m_TagString: seed
@@ -77,9 +77,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingLayerID: -287583443
+  m_SortingLayer: 3
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 689028b4fc32a43e2bea714761bc1a10, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -91,41 +91,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &3072076035850891579
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2371862549144559939}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 2.2234778
 --- !u!114 &3749851548829945129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,6 +122,7 @@ MonoBehaviour:
   worldPrefab: {fileID: 0}
   collectable: 1
   inInventory: 0
+  dropPositionY: 0
   GrowingSprite:
   - {fileID: 21300000, guid: 689028b4fc32a43e2bea714761bc1a10, type: 3}
   - {fileID: 21300000, guid: 080c4d9064d7f4691b95553e683f1fb3, type: 3}
@@ -172,3 +138,24 @@ MonoBehaviour:
   harvestable: 0
   cropName: 
   growthWorth: 5
+--- !u!135 &8888882497304535880
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2371862549144559939}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2.38
+  m_Center: {x: 0, y: 0, z: 0}

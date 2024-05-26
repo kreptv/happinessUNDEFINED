@@ -22,34 +22,61 @@ public class PlayerMovementScript : MonoBehaviour
     #endregion
 
     [SerializeField] private float moveSpeed = 5f;
-    private static Rigidbody2D rb;
-    private Vector2 movement;
-    private Collider2D isTouchingDoor = null;
+    [SerializeField] private float runSpeed = 10f;
+    [SerializeField] private float jumpForce = 5f;
+
+    [HideInInspector] public static Rigidbody rb;
+    private Vector3 movement;
+    private Collider isTouchingDoor = null;
     private Region CurrentRegion;
-    private PolygonCollider2D currentRegionMovementBoundary;
+    private Collider currentRegionMovementBoundary;
     private static bool canMove;
+    private bool isGrounded;
+    private Animator myAnimator;
+    private bool facingRight;
 
     private Item InRangeOfItem;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody>();
         canMove = true;
+        myAnimator = this.transform.GetChild(0).GetComponent<Animator>();
+        facingRight = true;
     }
 
     void Update()
     {
         // Get input from the player
         movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
+        movement.z = Input.GetAxisRaw("Vertical");
 
         // Normalize the movement vector to prevent faster diagonal movement
         movement = movement.normalized;
 
+        // Set animator parameters for walking and running
+        //bool isRunning = Input.GetKey(KeyCode.LeftShift);
+        bool isWalking = movement.x != 0 || movement.z != 0;
+
+        if (isGrounded)
+        {
+            myAnimator.SetTrigger("grounded");
+        }
+
+        //myAnimator.SetBool("running", isRunning && isWalking);
+        myAnimator.SetBool("walking", isWalking);
+        /*if (isRunning)
+        {
+            myAnimator.speed = 1f;
+        }
+        else
+        {
+            myAnimator.speed = 1.4f;
+        }*/
+
         // Check if player is on Door tile
         if (isTouchingDoor != null)
         {
-
             // Play a door animation
 
             // Check if the Enter key is pressed
@@ -58,20 +85,37 @@ public class PlayerMovementScript : MonoBehaviour
                 Debug.Log("Going through door.");
                 isTouchingDoor.gameObject.transform.GetComponent<DoorScript>().Teleport();
             }
-        } // isTouchingDoor
+        }
 
-        /*if ((InRangeOfItem != null) && (InRangeOfItem.collectable)){
-            // Play an item highlight animation
+        // Jumping logic
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            isGrounded = false;
+            myAnimator.SetTrigger("jumping");
+        }
 
-            // Check if the Enter key is pressed
-            if (Input.GetKeyDown(KeyCode.Return))
+        // Check player facing direction and update the scale
+        if (movement.x < 0) // facing left
+        {
+            if (!facingRight)
             {
-                InRangeOfItem.CollectItem();
+                return;
             }
-
-
-
-        }*/
+            transform.GetChild(0).position = new Vector3(transform.GetChild(0).position.x +4, transform.GetChild(0).position.y, transform.GetChild(0).position.z);
+            transform.GetChild(0).localScale = new Vector3(-50, transform.GetChild(0).localScale.y, transform.GetChild(0).localScale.z);
+            facingRight = false;
+        }
+        else if (movement.x > 0) // facing right
+        {
+            if (facingRight)
+            {
+                return;
+            }
+            transform.GetChild(0).position = new Vector3(transform.GetChild(0).position.x -4, transform.GetChild(0).position.y, transform.GetChild(0).position.z);
+            transform.GetChild(0).localScale = new Vector3(50, transform.GetChild(0).localScale.y, transform.GetChild(0).localScale.z);
+            facingRight = true;
+        }
     }
 
     void FixedUpdate()
@@ -80,15 +124,15 @@ public class PlayerMovementScript : MonoBehaviour
         {
             return;
         }
-        
-        Vector2 desiredPosition = rb.position + movement * moveSpeed * Time.fixedDeltaTime;
+
+        float speed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : moveSpeed;
+        Vector3 desiredPosition = rb.position + movement * speed * Time.fixedDeltaTime;
 
         // Move the player character
         rb.MovePosition(desiredPosition);
     }
 
-
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("door"))
         {
@@ -109,9 +153,9 @@ public class PlayerMovementScript : MonoBehaviour
             InRangeOfItem = other.gameObject.GetComponent<Item>();
             Debug.Log("In range of item" + InRangeOfItem.itemName);
         }
-    } // OnTriggerEnter
+    }
 
-    void OnTriggerExit2D(Collider2D other)
+    void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("door"))
         {
@@ -122,10 +166,23 @@ public class PlayerMovementScript : MonoBehaviour
         {
             InRangeOfItem = null;
         }
-    } // OnTriggerExit
+    }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("ground"))
+        {
+            isGrounded = true;
+        }
+    }
 
-
+    void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("ground"))
+        {
+            isGrounded = false;
+        }
+    }
 
     public static void TeleportToDoor(string door)
     {
@@ -134,6 +191,4 @@ public class PlayerMovementScript : MonoBehaviour
         rb.gameObject.transform.position = new Vector3(DoorObject.thisDoorCollider.gameObject.transform.position.x, DoorObject.thisDoorCollider.gameObject.transform.position.y, rb.gameObject.transform.position.z);
         Debug.Log("Teleported to " + DoorObject.thisDoorCollider.gameObject.transform.position.x + " " + DoorObject.thisDoorCollider.gameObject.transform.position.y);
     }
-
-
 }

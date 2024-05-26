@@ -10,6 +10,7 @@ TagManager:
   - npc
   - seed
   - waterpot
+  - ground
   layers:
   - Default
   - TransparentFX
@@ -46,4 +47,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: items
+    uniqueID: 2228341689
+    locked: 0
+  - name: characters
+    uniqueID: 3052848693
+    locked: 0
+  - name: background
+    uniqueID: 4007383853
     locked: 0

@@ -9,7 +9,7 @@ public class FlowerPlot : MonoBehaviour
 {
     public Seed seed = null;
 
-    public void OnTriggerEnter2D(Collider2D collider)
+    public void OnTriggerEnter(Collider collider)
     {
 
         Debug.Log("Flower pot activated");
@@ -86,6 +86,7 @@ public class FlowerPlot : MonoBehaviour
         this.gameObject.transform.GetChild(0).GetComponent<Seed>().harvestable = item.harvestable;
         this.gameObject.transform.GetChild(0).GetComponent<Seed>().cropName = item.cropName;
         this.gameObject.transform.GetChild(0).GetComponent<Seed>().growthWorth = item.growthWorth;
+        this.gameObject.transform.GetChild(0).GetComponent<Seed>().dropPositionY = item.dropPositionY;
 
 
         return this.gameObject.transform.GetChild(0).GetComponent<Seed>();

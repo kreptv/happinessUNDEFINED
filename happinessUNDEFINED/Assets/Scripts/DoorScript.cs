@@ -8,11 +8,11 @@ public class DoorScript : MonoBehaviour
         public string doorName;
         //[SerializeField] Region doorRegion;
         public string toDoorName;
-        [HideInInspector]public PolygonCollider2D thisDoorCollider;
+        [HideInInspector]public Collider thisDoorCollider;
 
         private void Awake()
         {
-            thisDoorCollider = this.gameObject.transform.GetComponent<PolygonCollider2D>();
+            thisDoorCollider = this.gameObject.transform.GetComponent<Collider>();
         }
 
         public void EnableDoor()

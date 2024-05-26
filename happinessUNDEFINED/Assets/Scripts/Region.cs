@@ -8,12 +8,12 @@ public class Region : MonoBehaviour
         public string regionName;
         [SerializeField] public float size;
         
-        [HideInInspector] public PolygonCollider2D regionCollider;
+        [HideInInspector] public Collider regionCollider;
 
 
         private void Awake()
         {
-            regionCollider = this.gameObject.transform.GetComponent<PolygonCollider2D>();
+            regionCollider = this.gameObject.transform.GetComponent<Collider>();
         }
 
         void ShowRegion()
