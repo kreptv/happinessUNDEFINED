@@ -5,12 +5,20 @@ public class CubismLookTarget : MonoBehaviour, ICubismLookTarget
 {
     public Vector3 GetPosition()
     {
+        // Get the mouse position in screen coordinates
         var targetPosition = Input.mousePosition;
-        targetPosition.z = Camera.main.nearClipPlane; // Set the Z distance to the near clipping plane
-        targetPosition = Camera.main.ScreenToWorldPoint(targetPosition); // Convert to world point
+
+        // Set the Z distance to the distance from the camera to the model
+        float modelZ = Camera.main.WorldToScreenPoint(transform.position).z;
+
+        // Convert the screen coordinates to world coordinates
+        targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(targetPosition.x, targetPosition.y, modelZ));
 
         // Adjust the position to match the model's local coordinates
         targetPosition = transform.InverseTransformPoint(targetPosition);
+
+        // Ensure the target position is only affecting the x and y axis
+        targetPosition.z = 0;
 
         Debug.Log("Eye target position: " + targetPosition);
         return targetPosition;

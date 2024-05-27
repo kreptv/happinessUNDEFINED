@@ -15,8 +15,8 @@ public class Live2DMouseFollow : MonoBehaviour
     private CubismParameter faceYParameter;
 
     // Range of movement for eyes and face parameters
-    private const float eyeMovementRange = 0.1f;
-    private const float faceMovementRange = 0.05f;
+    public float eyeMovementRange = 0.1f;
+    public float faceMovementRange = 0.05f;
 
     void Start()
     {
