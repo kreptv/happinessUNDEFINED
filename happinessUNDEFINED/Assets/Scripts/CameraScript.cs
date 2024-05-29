@@ -95,18 +95,18 @@ public class CameraScript : MonoBehaviour
                 if (distanceToCamera < disappearDistance)
                 {
                     SetSpriteAlpha(spriteRenderer, 0f);
-                    ToggleCollider(spriteRenderer.gameObject, false);
+                    //ToggleCollider(spriteRenderer.gameObject, false);
                 }
                 else if (distanceToCamera < fadeDistance)
                 {
                     float alpha = Mathf.InverseLerp(disappearDistance, fadeDistance, distanceToCamera);
                     SetSpriteAlpha(spriteRenderer, alpha);
-                    ToggleCollider(spriteRenderer.gameObject, true);
+                    //ToggleCollider(spriteRenderer.gameObject, true);
                 }
                 else
                 {
                     SetSpriteAlpha(spriteRenderer, 1f);
-                    ToggleCollider(spriteRenderer.gameObject, true);
+                    //ToggleCollider(spriteRenderer.gameObject, true);
                 }
             }
         }

@@ -94,28 +94,6 @@ public class PlayerMovementScript : MonoBehaviour
             isGrounded = false;
             myAnimator.SetTrigger("jumping");
         }
-
-        // Check player facing direction and update the scale
-        if (movement.x < 0) // facing left
-        {
-            if (!facingRight)
-            {
-                return;
-            }
-            transform.GetChild(0).position = new Vector3(transform.GetChild(0).position.x +4, transform.GetChild(0).position.y, transform.GetChild(0).position.z);
-            transform.GetChild(0).localScale = new Vector3(-50, transform.GetChild(0).localScale.y, transform.GetChild(0).localScale.z);
-            facingRight = false;
-        }
-        else if (movement.x > 0) // facing right
-        {
-            if (facingRight)
-            {
-                return;
-            }
-            transform.GetChild(0).position = new Vector3(transform.GetChild(0).position.x -4, transform.GetChild(0).position.y, transform.GetChild(0).position.z);
-            transform.GetChild(0).localScale = new Vector3(50, transform.GetChild(0).localScale.y, transform.GetChild(0).localScale.z);
-            facingRight = true;
-        }
     }
 
     void FixedUpdate()
@@ -130,6 +108,28 @@ public class PlayerMovementScript : MonoBehaviour
 
         // Move the player character
         rb.MovePosition(desiredPosition);
+
+        // Check player facing direction and update the scale
+        if (movement.x < 0) // facing left
+        {
+            if (!facingRight)
+            {
+                return;
+            }
+            transform.GetChild(0).position = new Vector3(transform.GetChild(0).position.x + 4, transform.GetChild(0).position.y, transform.GetChild(0).position.z);
+            transform.GetChild(0).localScale = new Vector3(-50, transform.GetChild(0).localScale.y, transform.GetChild(0).localScale.z);
+            facingRight = false;
+        }
+        else if (movement.x > 0) // facing right
+        {
+            if (facingRight)
+            {
+                return;
+            }
+            transform.GetChild(0).position = new Vector3(transform.GetChild(0).position.x - 4, transform.GetChild(0).position.y, transform.GetChild(0).position.z);
+            transform.GetChild(0).localScale = new Vector3(50, transform.GetChild(0).localScale.y, transform.GetChild(0).localScale.z);
+            facingRight = true;
+        }
     }
 
     void OnTriggerEnter(Collider other)
