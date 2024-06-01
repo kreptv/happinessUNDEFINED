@@ -141,16 +141,9 @@ public class InventoryScript : MonoBehaviour
             item.GetComponent<SpriteRenderer>().sortingOrder = 0;
             //selectedIndex = 1; // No item selected after dropping
 
-            // if item is facing left, flip action popup
 
-            if (PlayerMovementScript.facingRight)
-            {
-                item.GetComponent<Item>().ActionPopup.transform.localScale = new Vector3(1, 1, 1);
-            }
-            else
-            {
-                item.GetComponent<Item>().ActionPopup.transform.localScale = new Vector3(-1, 1, 1);
-            }
+            item.transform.localScale = new Vector3(Mathf.Abs(item.transform.localScale.x), Mathf.Abs(item.transform.localScale.y), Mathf.Abs(item.transform.localScale.z));
+            item.GetComponent<Item>().ActionPopup.transform.localScale = new Vector3(1, 1, 1);
 
 
 
