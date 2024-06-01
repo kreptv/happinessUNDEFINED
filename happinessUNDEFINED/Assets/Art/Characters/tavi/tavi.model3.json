@@ -1,0 +1,23 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "tavi.moc3",
+		"Textures": [
+			"tavi.1024/texture_00.png"
+		],
+		"Physics": "tavi.physics3.json",
+		"DisplayInfo": "tavi.cdi3.json"
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		}
+	]
+}

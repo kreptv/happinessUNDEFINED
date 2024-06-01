@@ -1,0 +1,23 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "radiel.moc3",
+		"Textures": [
+			"radiel.1024/texture_00.png"
+		],
+		"Physics": "radiel.physics3.json",
+		"DisplayInfo": "radiel.cdi3.json"
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		}
+	]
+}

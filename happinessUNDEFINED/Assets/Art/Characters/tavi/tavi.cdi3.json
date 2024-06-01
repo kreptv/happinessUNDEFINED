@@ -1,0 +1,220 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "Param9",
+			"GroupId": "ParamGroup",
+			"Name": "r thigh"
+		},
+		{
+			"Id": "Param2",
+			"GroupId": "ParamGroup",
+			"Name": "r leg"
+		},
+		{
+			"Id": "Param10",
+			"GroupId": "ParamGroup",
+			"Name": "r foot"
+		},
+		{
+			"Id": "Param3",
+			"GroupId": "ParamGroup2",
+			"Name": "l thigh"
+		},
+		{
+			"Id": "Param8",
+			"GroupId": "ParamGroup2",
+			"Name": "l leg"
+		},
+		{
+			"Id": "Param11",
+			"GroupId": "ParamGroup2",
+			"Name": "l foot"
+		},
+		{
+			"Id": "Param4",
+			"GroupId": "ParamGroup3",
+			"Name": "r arm"
+		},
+		{
+			"Id": "Param6",
+			"GroupId": "ParamGroup3",
+			"Name": "r forearm"
+		},
+		{
+			"Id": "Param12",
+			"GroupId": "ParamGroup3",
+			"Name": "r hand"
+		},
+		{
+			"Id": "Param5",
+			"GroupId": "ParamGroup4",
+			"Name": "l arm"
+		},
+		{
+			"Id": "Param7",
+			"GroupId": "ParamGroup4",
+			"Name": "l forearm"
+		},
+		{
+			"Id": "Param13",
+			"GroupId": "ParamGroup4",
+			"Name": "l hand"
+		},
+		{
+			"Id": "ParamAngleX",
+			"GroupId": "",
+			"Name": "Angle X"
+		},
+		{
+			"Id": "ParamAngleY",
+			"GroupId": "",
+			"Name": "Angle Y"
+		},
+		{
+			"Id": "ParamAngleZ",
+			"GroupId": "",
+			"Name": "Angle Z"
+		},
+		{
+			"Id": "ParamEyeLOpen",
+			"GroupId": "",
+			"Name": "Eyes Open"
+		},
+		{
+			"Id": "ParamEyeBallX",
+			"GroupId": "",
+			"Name": "Eyeball X"
+		},
+		{
+			"Id": "ParamEyeBallY",
+			"GroupId": "",
+			"Name": "Eyeball Y"
+		},
+		{
+			"Id": "ParamBrowLY",
+			"GroupId": "",
+			"Name": "Brow Y"
+		},
+		{
+			"Id": "Param16",
+			"GroupId": "",
+			"Name": "happy"
+		},
+		{
+			"Id": "Param",
+			"GroupId": "",
+			"Name": "tail"
+		},
+		{
+			"Id": "Param14",
+			"GroupId": "",
+			"Name": "wing rotation"
+		},
+		{
+			"Id": "Param17",
+			"GroupId": "",
+			"Name": "wing in"
+		},
+		{
+			"Id": "Param15",
+			"GroupId": "",
+			"Name": "transformation"
+		},
+		{
+			"Id": "ParamHairBack",
+			"GroupId": "",
+			"Name": "Hair Move Back"
+		}
+	],
+	"ParameterGroups": [
+		{
+			"Id": "ParamGroup",
+			"GroupId": "",
+			"Name": "r leg"
+		},
+		{
+			"Id": "ParamGroup2",
+			"GroupId": "",
+			"Name": "l leg"
+		},
+		{
+			"Id": "ParamGroup3",
+			"GroupId": "",
+			"Name": "r arm"
+		},
+		{
+			"Id": "ParamGroup4",
+			"GroupId": "",
+			"Name": "l arm"
+		}
+	],
+	"Parts": [
+		{
+			"Id": "Part4",
+			"Name": "tavi.psd"
+		},
+		{
+			"Id": "Part3",
+			"Name": "sadMouth.png"
+		},
+		{
+			"Id": "Part2",
+			"Name": "eyeClosed.png"
+		},
+		{
+			"Id": "Part",
+			"Name": "sadMouth.png"
+		},
+		{
+			"Id": "koda",
+			"Name": "koda"
+		},
+		{
+			"Id": "tavi",
+			"Name": "tavi"
+		},
+		{
+			"Id": "tail",
+			"Name": "tail"
+		},
+		{
+			"Id": "wing",
+			"Name": "wing"
+		},
+		{
+			"Id": "head",
+			"Name": "head"
+		},
+		{
+			"Id": "tail2",
+			"Name": "tail"
+		},
+		{
+			"Id": "wing2",
+			"Name": "wing"
+		},
+		{
+			"Id": "head2",
+			"Name": "head"
+		},
+		{
+			"Id": "eye",
+			"Name": "eye"
+		},
+		{
+			"Id": "eye2",
+			"Name": "eye"
+		}
+	],
+	"CombinedParameters": [
+		[
+			"ParamAngleX",
+			"ParamAngleY"
+		],
+		[
+			"ParamEyeBallX",
+			"ParamEyeBallY"
+		]
+	]
+}

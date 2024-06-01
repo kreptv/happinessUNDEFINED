@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerMovementScript : MonoBehaviour
 {
@@ -33,9 +34,10 @@ public class PlayerMovementScript : MonoBehaviour
     private static bool canMove;
     private bool isGrounded;
     private Animator myAnimator;
-    private bool facingRight;
+    public static bool facingRight;
 
-    private Item InRangeOfItem;
+    public static Item InRangeOfItem;
+    //public GameObject inventoryContainer;
 
     void Start()
     {
@@ -55,7 +57,6 @@ public class PlayerMovementScript : MonoBehaviour
         movement = movement.normalized;
 
         // Set animator parameters for walking and running
-        //bool isRunning = Input.GetKey(KeyCode.LeftShift);
         bool isWalking = movement.x != 0 || movement.z != 0;
 
         if (isGrounded)
@@ -65,14 +66,6 @@ public class PlayerMovementScript : MonoBehaviour
 
         //myAnimator.SetBool("running", isRunning && isWalking);
         myAnimator.SetBool("walking", isWalking);
-        /*if (isRunning)
-        {
-            myAnimator.speed = 1f;
-        }
-        else
-        {
-            myAnimator.speed = 1.4f;
-        }*/
 
         // Check if player is on Door tile
         if (isTouchingDoor != null)
@@ -93,6 +86,8 @@ public class PlayerMovementScript : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
             myAnimator.SetTrigger("jumping");
+
+            
         }
     }
 
@@ -119,6 +114,7 @@ public class PlayerMovementScript : MonoBehaviour
             transform.GetChild(0).position = new Vector3(transform.GetChild(0).position.x + 4, transform.GetChild(0).position.y, transform.GetChild(0).position.z);
             transform.GetChild(0).localScale = new Vector3(-50, transform.GetChild(0).localScale.y, transform.GetChild(0).localScale.z);
             facingRight = false;
+
         }
         else if (movement.x > 0) // facing right
         {
@@ -148,10 +144,25 @@ public class PlayerMovementScript : MonoBehaviour
             CurrentRegion.UpdateCameraSize();
             Debug.Log("Updating camera size to " + CurrentRegion.size);
         }
-        if (other.CompareTag("item") || other.CompareTag("seed"))
+        if (other.CompareTag("item"))
         {
+
             InRangeOfItem = other.gameObject.GetComponent<Item>();
-            Debug.Log("In range of item" + InRangeOfItem.itemName);
+
+            if (InRangeOfItem.inInventory == true) { return; }
+            if (!InRangeOfItem.collectable == true) { return; }
+
+            Debug.Log("PlayerMovementScript: In range of item " + InRangeOfItem.itemName);
+
+            // show action popup
+            if (InRangeOfItem.ActionPopup)
+            {
+                InRangeOfItem.ActionPopup.transform.GetChild(0).GetChild(0).GetComponent<TextMeshPro>().text = "Pick Up";
+                InRangeOfItem.ActionPopup.transform.GetChild(0).GetChild(1).GetComponent<TextMeshPro>().text = "E";
+                InRangeOfItem.ActionPopup.SetActive(true);
+            }
+
+            InventoryScript.inRangeOfItem = other;
         }
     }
 
@@ -164,6 +175,15 @@ public class PlayerMovementScript : MonoBehaviour
         }
         if (other.CompareTag("item"))
         {
+            // hide action popup
+            if (InRangeOfItem.ActionPopup)
+            {
+                InRangeOfItem.ActionPopup.SetActive(false);
+            }
+
+            Debug.Log("PlayerMovementScript: No longer in range of item " + InRangeOfItem.itemName);
+
+            InventoryScript.inRangeOfItem = null;
             InRangeOfItem = null;
         }
     }
@@ -173,6 +193,7 @@ public class PlayerMovementScript : MonoBehaviour
         if (collision.gameObject.CompareTag("ground"))
         {
             isGrounded = true;
+            Debug.Log("Grounded");
         }
     }
 
@@ -181,6 +202,7 @@ public class PlayerMovementScript : MonoBehaviour
         if (collision.gameObject.CompareTag("ground"))
         {
             isGrounded = false;
+            Debug.Log("Not Grounded");
         }
     }
 

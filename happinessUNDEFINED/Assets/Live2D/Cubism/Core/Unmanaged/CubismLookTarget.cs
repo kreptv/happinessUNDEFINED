@@ -21,7 +21,7 @@ public class CubismLookTarget : MonoBehaviour, ICubismLookTarget
         // Ensure the target position is only affecting the x and y axis
         //targetPosition.z = 0;
 
-        Debug.Log("Eye target position: " + targetPosition);
+        //Debug.Log("Eye target position: " + targetPosition);
         return targetPosition;
     }
 
