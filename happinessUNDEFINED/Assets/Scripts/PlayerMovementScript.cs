@@ -35,8 +35,6 @@ public class PlayerMovementScript : MonoBehaviour
     private bool isGrounded;
     private Animator myAnimator;
     public static bool facingRight;
-
-    public static Item InRangeOfItem;
     //public GameObject inventoryContainer;
 
     void Start()
@@ -147,22 +145,22 @@ public class PlayerMovementScript : MonoBehaviour
         if (other.CompareTag("item"))
         {
 
-            InRangeOfItem = other.gameObject.GetComponent<Item>();
+            Item currentItem = other.gameObject.GetComponent<Item>();
 
-            if (InRangeOfItem.inInventory == true) { return; }
-            if (!InRangeOfItem.collectable == true) { return; }
+            if (currentItem.inInventory == true) { return; }
+            if (!currentItem.collectable == true) { return; }
 
-            Debug.Log("PlayerMovementScript: In range of item " + InRangeOfItem.itemName);
+            Debug.Log("PlayerMovementScript: In range of item " + currentItem.itemName);
 
             // show action popup
-            if (InRangeOfItem.ActionPopup)
+            if (currentItem.ActionPopup)
             {
-                InRangeOfItem.ActionPopup.transform.GetChild(0).GetChild(0).GetComponent<TextMeshPro>().text = "Pick Up";
-                InRangeOfItem.ActionPopup.transform.GetChild(0).GetChild(1).GetComponent<TextMeshPro>().text = "E";
-                InRangeOfItem.ActionPopup.SetActive(true);
+                currentItem.ActionPopup.transform.GetChild(0).GetChild(0).GetComponent<TextMeshPro>().text = "Pick Up";
+                currentItem.ActionPopup.transform.GetChild(0).GetChild(1).GetComponent<TextMeshPro>().text = "E";
+                currentItem.ActionPopup.SetActive(true);
             }
 
-            InventoryScript.inRangeOfItem = other;
+            InventoryScript.InRangeOfItem.Add(other);
         }
     }
 
@@ -175,16 +173,17 @@ public class PlayerMovementScript : MonoBehaviour
         }
         if (other.CompareTag("item"))
         {
+            Item currentItem = other.gameObject.GetComponent<Item>();
+
             // hide action popup
-            if (InRangeOfItem.ActionPopup)
+            if (currentItem.ActionPopup)
             {
-                InRangeOfItem.ActionPopup.SetActive(false);
+                currentItem.ActionPopup.SetActive(false);
             }
 
-            Debug.Log("PlayerMovementScript: No longer in range of item " + InRangeOfItem.itemName);
+            Debug.Log("PlayerMovementScript: No longer in range of item " + currentItem.itemName);
 
-            InventoryScript.inRangeOfItem = null;
-            InRangeOfItem = null;
+            InventoryScript.InRangeOfItem.Remove(other);
         }
     }
 

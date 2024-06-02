@@ -26,7 +26,7 @@ public class InventoryScript : MonoBehaviour
     [SerializeField] private Transform sceneItemsTransform; // A transform where world items are placed
     private GameObject[] inventory = new GameObject[5];
     private int selectedIndex = 0; // -1 means no item is selected
-    public static Collider inRangeOfItem = null;
+    public static HashSet<Collider> InRangeOfItem;
 
     [SerializeField] private Image[] inventorySlots;
     [SerializeField] private Sprite blankSprite;
@@ -34,14 +34,17 @@ public class InventoryScript : MonoBehaviour
     private void Start()
     {
         SelectItem(0);
+
+        InRangeOfItem = new HashSet<Collider>();
+        
     }
 
     void Update()
     {
         // Check for item collection
-        if (inRangeOfItem != null && Input.GetKeyDown(KeyCode.E))
+        if ((InRangeOfItem.Count != 0) && Input.GetKeyDown(KeyCode.E))
         {
-            CollectItem(inRangeOfItem.gameObject);
+            CollectItem(TryCollectClosestItem());
         }
 
         // Check for item selection
@@ -81,8 +84,10 @@ public class InventoryScript : MonoBehaviour
 
                 // disable collider
                 item.GetComponent<Collider>().enabled = false;
-                inRangeOfItem = null;
-                PlayerMovementScript.InRangeOfItem = null;
+            
+
+                
+                InRangeOfItem.Remove(item.GetComponent<Collider>());
 
                 item.GetComponent<SpriteRenderer>().sortingOrder = 500;
 
@@ -158,5 +163,36 @@ public class InventoryScript : MonoBehaviour
 
 
         }
+    }
+
+    public GameObject TryCollectClosestItem()
+    {
+        if (InRangeOfItem.Count == 0)
+        {
+            Debug.Log("No items in range to collect.");
+            return null;
+        }
+
+        Collider closestItem = null;
+        float closestDistance = Mathf.Infinity;
+
+        foreach (Collider itemCollider in InRangeOfItem)
+        {
+            if (itemCollider.CompareTag("item"))
+            {
+                float distance = Vector3.Distance(PlayerMovementScript.rb.transform.position, itemCollider.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestItem = itemCollider;
+                }
+            }
+        }
+
+        if (closestItem != null)
+        {
+            return closestItem.gameObject;
+        }
+        return null;
     }
 }
