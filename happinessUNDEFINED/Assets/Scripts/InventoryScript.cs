@@ -68,6 +68,12 @@ public class InventoryScript : MonoBehaviour
                 item.transform.position = new Vector3(PlayerMovementScript.rb.gameObject.transform.position.x, PlayerMovementScript.rb.gameObject.transform.position.y, PlayerMovementScript.rb.gameObject.transform.position.z);
                 item.transform.localPosition = new Vector3(item.GetComponent<Item>().pawposition.x, item.GetComponent<Item>().pawposition.y, item.transform.localPosition.z);
 
+            // if player grabs object while facing left, flip object
+                if (!PlayerMovementScript.facingRight){
+                    item.GetComponent<SpriteRenderer>().flipX = true;
+                    //item.transform.localScale = new Vector2(-item.transform.localScale.x, item.transform.localScale.y);
+                }
+
             item.GetComponent<Item>().inInventory = true;
 
                 // disable item's Action Popup
@@ -140,6 +146,8 @@ public class InventoryScript : MonoBehaviour
             Debug.Log("Dropped item: " + item.name);
             item.GetComponent<SpriteRenderer>().sortingOrder = 0;
             //selectedIndex = 1; // No item selected after dropping
+
+            item.GetComponent<SpriteRenderer>().flipX = false;
 
 
             item.transform.localScale = new Vector3(Mathf.Abs(item.transform.localScale.x), Mathf.Abs(item.transform.localScale.y), Mathf.Abs(item.transform.localScale.z));
