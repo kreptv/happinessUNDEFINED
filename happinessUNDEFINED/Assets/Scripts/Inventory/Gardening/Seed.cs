@@ -5,23 +5,32 @@ using UnityEngine.UI;
 
 public class Seed : Item
 {
+
+    [HideInInspector] public GameObject worldPrefab;
+
     public Sprite[] GrowingSprite;
     public Vector2[] GrowthSizes;
+    public Vector2[] GrowthPositions;
     public int currentGrowth;
     public float growingCooldown;
+
     public bool harvestable;
-    public string cropName;
+    public string[] harvestRewardsStrings;
+    [HideInInspector] public GameObject[] harvestRewards;
+    public int growthMoney;
 
-    public int growthWorth;
+    public bool onStandby;
 
 
-    private bool onStandby;
+
 
     public void Start()
     {
        //this.gameObject.GetComponent<SpriteRenderer>().sprite = GrowingSprite[0];
         onStandby = false;
     }
+
+
 
     public void Grow()
     {
@@ -33,14 +42,17 @@ public class Seed : Item
         currentGrowth++;
         this.gameObject.GetComponent<SpriteRenderer>().sprite = GrowingSprite[currentGrowth];
         this.gameObject.transform.localScale = GrowthSizes[currentGrowth];
+        this.gameObject.transform.localPosition = GrowthPositions[currentGrowth];
 
         if (currentGrowth + 1 == GrowingSprite.Length)
         {
-            Debug.Log("Plant has reached max growth");
-            OnHandInventory.AddMoney(growthWorth);
+            //Debug.Log("Plant has reached max growth");
+            ActionTextUIScript.instance.BroadcastAction("Plant is fully grown, +$" + growthMoney, false);
+            Money.AddMoney(growthMoney);
             if (harvestable)
             {
-                Debug.Log("Plant is ready for harvest");
+
+                //Debug.Log("Plant is ready for harvest");
             }
         }
         else
@@ -48,6 +60,8 @@ public class Seed : Item
             StartCoroutine(WaitAndProceed());
         }
     }
+
+
 
     // Define the coroutine
     private IEnumerator WaitAndProceed()
@@ -63,5 +77,8 @@ public class Seed : Item
         Debug.Log("Plant " + this.itemName + " off standby.");
         onStandby = false;
     }
+
+
+
 
 }

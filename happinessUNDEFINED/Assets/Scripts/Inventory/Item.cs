@@ -22,7 +22,10 @@ public class Item : MonoBehaviour
     {
         dropPositionY = this.gameObject.transform.position.y;
 
-        ActionPopup.SetActive(false);
+        if (ActionPopup != null)
+        {
+            ActionPopup.SetActive(false);
+        }
 
     }
 

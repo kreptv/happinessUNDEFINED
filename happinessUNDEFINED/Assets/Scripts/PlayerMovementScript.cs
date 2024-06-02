@@ -142,7 +142,7 @@ public class PlayerMovementScript : MonoBehaviour
             CurrentRegion.UpdateCameraSize();
             Debug.Log("Updating camera size to " + CurrentRegion.size);
         }
-        if (other.CompareTag("item"))
+        if (other.CompareTag("item") || other.CompareTag("waterpot") || other.CompareTag("seed") || other.CompareTag("weapon") || other.CompareTag("questitem") || other.CompareTag("potion") || other.CompareTag("harvestitem"))
         {
 
             Item currentItem = other.gameObject.GetComponent<Item>();
@@ -150,7 +150,7 @@ public class PlayerMovementScript : MonoBehaviour
             if (currentItem.inInventory == true) { return; }
             if (!currentItem.collectable == true) { return; }
 
-            Debug.Log("PlayerMovementScript: In range of item " + currentItem.itemName);
+            //Debug.Log("PlayerMovementScript: In range of item " + currentItem.itemName);
 
             // show action popup
             if (currentItem.ActionPopup)
@@ -171,7 +171,7 @@ public class PlayerMovementScript : MonoBehaviour
             isTouchingDoor = null;
             Debug.Log("Player is no longer touching the door.");
         }
-        if (other.CompareTag("item"))
+        if (other.CompareTag("item") || other.CompareTag("waterpot") || other.CompareTag("seed") || other.CompareTag("weapon") || other.CompareTag("questitem") || other.CompareTag("potion") || other.CompareTag("harvestitem"))
         {
             Item currentItem = other.gameObject.GetComponent<Item>();
 

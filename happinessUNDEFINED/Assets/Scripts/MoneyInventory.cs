@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class OnHandInventory : MonoBehaviour
+public class Money : MonoBehaviour
 {
 
     #region Singleton
-    public static OnHandInventory instance;
+    public static Money instance;
 
     private void Awake()
     {
@@ -23,9 +23,6 @@ public class OnHandInventory : MonoBehaviour
         DontDestroyOnLoad(this);
     }
     #endregion
-
-    public static Item draggingItem = null;
-    public static Item lastDraggedItem = null;
 
     public static int money = 0;
     [SerializeField] private static TextMeshProUGUI moneyText;

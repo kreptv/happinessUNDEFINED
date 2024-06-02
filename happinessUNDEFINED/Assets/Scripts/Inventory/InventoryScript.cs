@@ -25,7 +25,8 @@ public class InventoryScript : MonoBehaviour
     [SerializeField] private Transform[] pawTransform; // A transform where collected items will be placed
     [SerializeField] private Transform sceneItemsTransform; // A transform where world items are placed
     private GameObject[] inventory = new GameObject[5];
-    private int selectedIndex = 0; // -1 means no item is selected
+    public int selectedIndex = 0; // -1 means no item is selected
+    public GameObject selectedItem;
     public static HashSet<Collider> InRangeOfItem;
 
     [SerializeField] private Image[] inventorySlots;
@@ -64,9 +65,11 @@ public class InventoryScript : MonoBehaviour
             {
                 int i = selectedIndex;
                 inventory[i] = item;
+                selectedItem = inventory[selectedIndex];
                 item.SetActive(false); // Hide the item in the scene
                 item.transform.SetParent(pawTransform[i]); // Set parent to paw
-                Debug.Log("Collected item: " + item.name + " in slot " + (i + 1));
+                ActionTextUIScript.instance.BroadcastAction("Collected item: " + item.name + " in slot " + (i + 1), false);
+                //Debug.Log("Collected item: " + item.name + " in slot " + (i + 1));
 
                 item.transform.position = new Vector3(PlayerMovementScript.rb.gameObject.transform.position.x, PlayerMovementScript.rb.gameObject.transform.position.y, PlayerMovementScript.rb.gameObject.transform.position.z);
                 item.transform.localPosition = new Vector3(item.GetComponent<Item>().pawposition.x, item.GetComponent<Item>().pawposition.y, item.transform.localPosition.z);
@@ -84,7 +87,6 @@ public class InventoryScript : MonoBehaviour
 
                 // disable collider
                 item.GetComponent<Collider>().enabled = false;
-            
 
                 
                 InRangeOfItem.Remove(item.GetComponent<Collider>());
@@ -96,10 +98,24 @@ public class InventoryScript : MonoBehaviour
             inventorySlots[i].sprite = item.GetComponent<Item>().inventorySprite;
                 inventorySlots[i].transform.localScale = item.GetComponent<Item>().inventorySpriteSize;
 
-                SelectItem(i);
+
+            // enable fill in GUI if item has a fill property
+            if (item.CompareTag("waterpot"))
+            {
+                inventorySlots[i].transform.parent.GetChild(3).gameObject.SetActive(true);
+                UpdateFill(i, item.GetComponent<WaterPot>());
+            }
+
+            SelectItem(i);
                 return;
             }
-        Debug.Log("Inventory full! Cannot collect item: " + item.name);
+        //Debug.Log("Inventory full! Cannot collect item: " + item.name);
+        ActionTextUIScript.instance.BroadcastAction("Inventory full! Cannot collect item: " + item.name, true);
+    }
+
+    public void UpdateFill(int i, WaterPot waterpot)
+    {
+        inventorySlots[i].transform.parent.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<Image>().fillAmount = (float)((float)waterpot.currentFill / (float)waterpot.capacity);
     }
 
     private void SelectItem(int index)
@@ -110,16 +126,19 @@ public class InventoryScript : MonoBehaviour
             inventorySlots[selectedIndex].transform.parent.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
             selectedIndex = index;
+            selectedItem = inventory[selectedIndex];
 
             // change color of new inventory box to green
             inventorySlots[index].transform.parent.GetChild(2).GetComponent<Image>().color = new Color(0.0f, 1.0f, 0.0f, 1.0f);
+
+            inventorySlots[index].transform.parent.GetComponent<Animator>().SetTrigger("Selected");
 
 
             for (int i = 0; i < 5; i++) // set all items inactive
             {
                 if (inventory[i] != null)
                 {
-                    Debug.Log("setting " + pawTransform[i].GetChild(0).gameObject.name + " inactive");
+                //Debug.Log("setting " + pawTransform[i].GetChild(0).gameObject.name + " inactive");
                 pawTransform[i].GetChild(0).gameObject.SetActive(false);
                 }
             }
@@ -129,8 +148,8 @@ public class InventoryScript : MonoBehaviour
                 pawTransform[index].GetChild(0).gameObject.SetActive(true); // show item in paw
             }
 
-
-                Debug.Log("Selected item in slot " + (index + 1));
+            //ActionTextUIScript.instance.BroadcastAction("Selected item in slot " + (index + 1), false);
+            //Debug.Log("Selected item in slot " + (index + 1));
         }
     }
 
@@ -147,20 +166,20 @@ public class InventoryScript : MonoBehaviour
             item.GetComponent<Collider>().enabled = true; // enable collider
             item.GetComponent<Item>().ActionPopup.SetActive(true);
             inventory[selectedIndex] = null;
+            selectedItem = inventory[selectedIndex];
             inventorySlots[selectedIndex].sprite = blankSprite;
-            Debug.Log("Dropped item: " + item.name);
+            //Debug.Log("Dropped item: " + item.name);
+            ActionTextUIScript.instance.BroadcastAction("Dropped item: " + item.name, false);
             item.GetComponent<SpriteRenderer>().sortingOrder = 0;
             //selectedIndex = 1; // No item selected after dropping
 
             item.GetComponent<SpriteRenderer>().flipX = false;
 
+            inventorySlots[selectedIndex].transform.parent.GetChild(3).gameObject.SetActive(false);
+
 
             item.transform.localScale = new Vector3(Mathf.Abs(item.transform.localScale.x), Mathf.Abs(item.transform.localScale.y), Mathf.Abs(item.transform.localScale.z));
             item.GetComponent<Item>().ActionPopup.transform.localScale = new Vector3(1, 1, 1);
-
-
-
-
 
         }
     }
@@ -178,7 +197,7 @@ public class InventoryScript : MonoBehaviour
 
         foreach (Collider itemCollider in InRangeOfItem)
         {
-            if (itemCollider.CompareTag("item"))
+            if (itemCollider.CompareTag("item") || itemCollider.CompareTag("waterpot") || itemCollider.CompareTag("seed") || itemCollider.CompareTag("questitem") || itemCollider.CompareTag("weapon") || itemCollider.CompareTag("potion") || itemCollider.CompareTag("harvestitem"))
             {
                 float distance = Vector3.Distance(PlayerMovementScript.rb.transform.position, itemCollider.transform.position);
                 if (distance < closestDistance)
@@ -195,4 +214,24 @@ public class InventoryScript : MonoBehaviour
         }
         return null;
     }
+
+
+    public void DestroySelectedItem()
+    {
+        if (selectedIndex >= 0 && selectedIndex < inventory.Length && inventory[selectedIndex] != null)
+        {
+            GameObject item = inventory[selectedIndex];
+            Debug.Log("Deleting item from inventory: " + item.name);
+            // Delete him
+            Destroy(item);
+            inventory[selectedIndex] = null;
+            selectedItem = inventory[selectedIndex];
+            inventorySlots[selectedIndex].sprite = blankSprite;
+            inventorySlots[selectedIndex].transform.parent.GetChild(3).gameObject.SetActive(false);
+
+        }
+    }
+
+
+
 }

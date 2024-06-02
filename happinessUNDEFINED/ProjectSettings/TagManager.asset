@@ -11,6 +11,10 @@ TagManager:
   - seed
   - waterpot
   - ground
+  - weapon
+  - questitem
+  - potion
+  - harvestitem
   layers:
   - Default
   - TransparentFX
