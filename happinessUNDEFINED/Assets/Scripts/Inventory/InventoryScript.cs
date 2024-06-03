@@ -148,6 +148,41 @@ public class InventoryScript : MonoBehaviour
                 pawTransform[index].GetChild(0).gameObject.SetActive(true); // show item in paw
             }
 
+
+            // Check all surrounding objects; if selectedItem == null, hide them
+            if (selectedItem == null)
+            {
+                if (InRangeOfItem != null)
+                {
+                    //Debug.Log("in range of item test");
+                    foreach (Collider i in InRangeOfItem)
+                    {
+                        PlayerMovementScript.instance.ShowActionPopup(i.gameObject.GetComponent<Item>());
+                    }
+                }
+            }
+            else
+            {
+                if (InRangeOfItem != null)
+                {
+                    foreach (Collider i in InRangeOfItem)
+                    {
+                        PlayerMovementScript.instance.HideActionPopup(i.gameObject.GetComponent<Item>());
+                    }
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
             //ActionTextUIScript.instance.BroadcastAction("Selected item in slot " + (index + 1), false);
             //Debug.Log("Selected item in slot " + (index + 1));
         }
@@ -180,6 +215,13 @@ public class InventoryScript : MonoBehaviour
 
             item.transform.localScale = new Vector3(Mathf.Abs(item.transform.localScale.x), Mathf.Abs(item.transform.localScale.y), Mathf.Abs(item.transform.localScale.z));
             item.GetComponent<Item>().ActionPopup.transform.localScale = new Vector3(1, 1, 1);
+
+
+            // repoll for items
+            SelectItem(selectedIndex);
+
+
+
 
         }
     }

@@ -84,9 +84,18 @@ public class PlayerMovementScript : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
             myAnimator.SetTrigger("jumping");
-
             
         }
+
+
+
+
+
+
+
+
+
+
     }
 
     void FixedUpdate()
@@ -150,17 +159,34 @@ public class PlayerMovementScript : MonoBehaviour
             if (currentItem.inInventory == true) { return; }
             if (!currentItem.collectable == true) { return; }
 
+            InventoryScript.InRangeOfItem.Add(other);
+
+            if (InventoryScript.instance.selectedItem != null) {return;}
+
             //Debug.Log("PlayerMovementScript: In range of item " + currentItem.itemName);
 
             // show action popup
-            if (currentItem.ActionPopup)
-            {
-                currentItem.ActionPopup.transform.GetChild(0).GetChild(0).GetComponent<TextMeshPro>().text = "Pick Up";
-                currentItem.ActionPopup.transform.GetChild(0).GetChild(1).GetComponent<TextMeshPro>().text = "E";
-                currentItem.ActionPopup.SetActive(true);
-            }
+            ShowActionPopup(currentItem);
+        }
+    }
 
-            InventoryScript.InRangeOfItem.Add(other);
+
+    public void ShowActionPopup(Item currentItem)
+    {
+        if (currentItem.ActionPopup)
+        {
+            currentItem.ActionPopup.transform.GetChild(0).GetChild(0).GetComponent<TextMeshPro>().text = "Pick Up";
+            currentItem.ActionPopup.transform.GetChild(0).GetChild(1).GetComponent<TextMeshPro>().text = "E";
+            currentItem.ActionPopup.SetActive(true);
+        }
+
+    }
+
+    public void HideActionPopup(Item currentItem)
+    {
+        if (currentItem.ActionPopup)
+        {
+            currentItem.ActionPopup.SetActive(false);
         }
     }
 
@@ -176,10 +202,7 @@ public class PlayerMovementScript : MonoBehaviour
             Item currentItem = other.gameObject.GetComponent<Item>();
 
             // hide action popup
-            if (currentItem.ActionPopup)
-            {
-                currentItem.ActionPopup.SetActive(false);
-            }
+            HideActionPopup(currentItem);
 
             Debug.Log("PlayerMovementScript: No longer in range of item " + currentItem.itemName);
 
