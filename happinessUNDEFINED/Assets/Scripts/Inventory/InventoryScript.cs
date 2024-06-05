@@ -32,18 +32,21 @@ public class InventoryScript : MonoBehaviour
     [SerializeField] private Image[] inventorySlots;
     [SerializeField] private Sprite blankSprite;
 
+    private bool onPickupCooldown;
+
     private void Start()
     {
         SelectItem(0);
 
         InRangeOfItem = new HashSet<Collider>();
-        
+
+        onPickupCooldown = false;
     }
 
     void Update()
     {
         // Check for item collection
-        if ((InRangeOfItem.Count != 0) && Input.GetKeyDown(KeyCode.E))
+        if ((InRangeOfItem.Count != 0) && Input.GetKeyDown(KeyCode.E) && !onPickupCooldown)
         {
             CollectItem(TryCollectClosestItem());
         }
@@ -118,10 +121,11 @@ public class InventoryScript : MonoBehaviour
         inventorySlots[i].transform.parent.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<Image>().fillAmount = (float)((float)waterpot.currentFill / (float)waterpot.capacity);
     }
 
-    private void SelectItem(int index)
+    public void SelectItem(int index)
     {
         if (index >= 0 && index < inventory.Length)
         {
+
             // change color of old inventory box to white
             inventorySlots[selectedIndex].transform.parent.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -172,7 +176,17 @@ public class InventoryScript : MonoBehaviour
                 }
             }
 
-
+            if (selectedItem != null)
+            {
+                if (selectedItem.tag == "harvestitem" || selectedItem.tag == "weapon")
+                {
+                    Attack.instance.currentWeaponCollider = selectedItem.transform.GetChild(1).GetComponent<Collider>();
+                }
+                else
+                {
+                    Attack.instance.currentWeaponCollider = null;
+                }
+            }
 
 
 
@@ -207,7 +221,7 @@ public class InventoryScript : MonoBehaviour
             ActionTextUIScript.instance.BroadcastAction("Dropped item: " + item.name, false);
             item.GetComponent<SpriteRenderer>().sortingOrder = 0;
             //selectedIndex = 1; // No item selected after dropping
-
+            item.transform.rotation = new Quaternion(0, 0, 0, 0);
             item.GetComponent<SpriteRenderer>().flipX = false;
 
             inventorySlots[selectedIndex].transform.parent.GetChild(3).gameObject.SetActive(false);
@@ -271,7 +285,20 @@ public class InventoryScript : MonoBehaviour
             inventorySlots[selectedIndex].sprite = blankSprite;
             inventorySlots[selectedIndex].transform.parent.GetChild(3).gameObject.SetActive(false);
 
+            StartCoroutine(PickupCooldown());
+
         }
+    }
+
+    // Define the coroutine
+    private IEnumerator PickupCooldown()
+    {
+        SelectItem(selectedIndex);
+        onPickupCooldown = true;
+        yield return new WaitForSeconds(0.01f);
+        onPickupCooldown = false;
+
+
     }
 
 

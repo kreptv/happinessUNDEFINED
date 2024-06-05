@@ -25,6 +25,7 @@ public class PlayerMovementScript : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float runSpeed = 10f;
     [SerializeField] private float jumpForce = 5f;
+    public float attackCooldown = 5f;
 
     [HideInInspector] public static Rigidbody rb;
     private Vector3 movement;
@@ -33,7 +34,8 @@ public class PlayerMovementScript : MonoBehaviour
     private Collider currentRegionMovementBoundary;
     private static bool canMove;
     private bool isGrounded;
-    private Animator myAnimator;
+    private bool onAttackCooldown;
+    public Animator myAnimator;
     public static bool facingRight;
     //public GameObject inventoryContainer;
 
@@ -43,6 +45,7 @@ public class PlayerMovementScript : MonoBehaviour
         canMove = true;
         myAnimator = this.transform.GetChild(0).GetComponent<Animator>();
         facingRight = true;
+        onAttackCooldown = false;
     }
 
     void Update()
@@ -87,6 +90,32 @@ public class PlayerMovementScript : MonoBehaviour
             
         }
 
+        /*if (Input.GetKeyDown(KeyCode.C))
+        {
+            if (!myAnimator.GetBool("fallToKnees"))
+            {
+                myAnimator.SetBool("fallToKnees", true);
+            }
+            else
+            {
+                myAnimator.SetBool("fallToKnees", false);
+            }
+        }*/
+
+        if (!onAttackCooldown)
+        {
+            // Attacking logic
+            if (InventoryScript.instance.selectedItem == null)
+            {
+                return;
+            }
+            if (isGrounded && Input.GetKeyDown(KeyCode.F) && (InventoryScript.instance.selectedItem.tag == "harvestitem" || InventoryScript.instance.selectedItem.tag == "weapon"))
+            {
+                StartCoroutine(AttackCooldown());
+                Attack.instance.attackEnemiesInRange();
+                myAnimator.SetTrigger("attacking");
+            }
+        }
 
 
 
@@ -96,6 +125,22 @@ public class PlayerMovementScript : MonoBehaviour
 
 
 
+
+
+
+
+    }
+
+
+    // Define the coroutine
+    private IEnumerator AttackCooldown()
+    {
+        onAttackCooldown = true;
+
+        // Wait for seconds
+        yield return new WaitForSeconds(attackCooldown);
+
+        onAttackCooldown = false;
     }
 
     void FixedUpdate()
@@ -146,10 +191,10 @@ public class PlayerMovementScript : MonoBehaviour
         {
             CurrentRegion = other.gameObject.GetComponent<Region>();
             currentRegionMovementBoundary = other.gameObject.GetComponent<Region>().regionCollider;
-            Debug.Log("Player is in Region " + other.gameObject.GetComponent<Region>().regionName);
+            //Debug.Log("Player is in Region " + other.gameObject.GetComponent<Region>().regionName);
             CameraScript.UpdateBoundary(other);
             CurrentRegion.UpdateCameraSize();
-            Debug.Log("Updating camera size to " + CurrentRegion.size);
+            //Debug.Log("Updating camera size to " + CurrentRegion.size);
         }
         if (other.CompareTag("item") || other.CompareTag("waterpot") || other.CompareTag("seed") || other.CompareTag("weapon") || other.CompareTag("questitem") || other.CompareTag("potion") || other.CompareTag("harvestitem"))
         {
@@ -204,7 +249,7 @@ public class PlayerMovementScript : MonoBehaviour
             // hide action popup
             HideActionPopup(currentItem);
 
-            Debug.Log("PlayerMovementScript: No longer in range of item " + currentItem.itemName);
+            //Debug.Log("PlayerMovementScript: No longer in range of item " + currentItem.itemName);
 
             InventoryScript.InRangeOfItem.Remove(other);
         }

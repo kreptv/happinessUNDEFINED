@@ -15,6 +15,9 @@ TagManager:
   - questitem
   - potion
   - harvestitem
+  - enemy
+  - weaponhitbox
+  - playerhitbox
   layers:
   - Default
   - TransparentFX

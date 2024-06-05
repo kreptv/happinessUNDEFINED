@@ -1,0 +1,160 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "Param3",
+			"GroupId": "ParamGroup",
+			"Name": "front leg base"
+		},
+		{
+			"Id": "Param11",
+			"GroupId": "ParamGroup",
+			"Name": "front leg 1"
+		},
+		{
+			"Id": "Param12",
+			"GroupId": "ParamGroup",
+			"Name": "front leg 2"
+		},
+		{
+			"Id": "Param13",
+			"GroupId": "ParamGroup",
+			"Name": "front leg 3"
+		},
+		{
+			"Id": "Param14",
+			"GroupId": "ParamGroup2",
+			"Name": "front leg 2 base"
+		},
+		{
+			"Id": "Param15",
+			"GroupId": "ParamGroup2",
+			"Name": "front leg 2 1"
+		},
+		{
+			"Id": "Param16",
+			"GroupId": "ParamGroup2",
+			"Name": "front leg 2 2"
+		},
+		{
+			"Id": "Param17",
+			"GroupId": "ParamGroup2",
+			"Name": "front leg 2 3"
+		},
+		{
+			"Id": "ParamBreath",
+			"GroupId": "",
+			"Name": "Breath"
+		},
+		{
+			"Id": "Param18",
+			"GroupId": "",
+			"Name": "breath lr"
+		},
+		{
+			"Id": "Param",
+			"GroupId": "",
+			"Name": "wing"
+		},
+		{
+			"Id": "Param4",
+			"GroupId": "",
+			"Name": "jaws"
+		},
+		{
+			"Id": "Param5",
+			"GroupId": "",
+			"Name": "head"
+		},
+		{
+			"Id": "Param2",
+			"GroupId": "",
+			"Name": "tail"
+		},
+		{
+			"Id": "Param7",
+			"GroupId": "",
+			"Name": "thorax"
+		},
+		{
+			"Id": "Param6",
+			"GroupId": "",
+			"Name": "antennae"
+		},
+		{
+			"Id": "Param8",
+			"GroupId": "",
+			"Name": "leg 2"
+		},
+		{
+			"Id": "Param9",
+			"GroupId": "",
+			"Name": "leg 3"
+		},
+		{
+			"Id": "Param10",
+			"GroupId": "",
+			"Name": "leg 4"
+		}
+	],
+	"ParameterGroups": [
+		{
+			"Id": "ParamGroup",
+			"GroupId": "",
+			"Name": "front leg"
+		},
+		{
+			"Id": "ParamGroup2",
+			"GroupId": "",
+			"Name": "front leg back"
+		}
+	],
+	"Parts": [
+		{
+			"Id": "Part3",
+			"Name": "fly.psd"
+		},
+		{
+			"Id": "Part",
+			"Name": "dragonfly.psd"
+		},
+		{
+			"Id": "fly",
+			"Name": "fly"
+		},
+		{
+			"Id": "dragonfly",
+			"Name": "dragonfly"
+		},
+		{
+			"Id": "wing2",
+			"Name": "wing"
+		},
+		{
+			"Id": "Part2",
+			"Name": "leg 1"
+		},
+		{
+			"Id": "head2",
+			"Name": "head"
+		},
+		{
+			"Id": "wing",
+			"Name": "wing"
+		},
+		{
+			"Id": "head",
+			"Name": "head"
+		},
+		{
+			"Id": "leg",
+			"Name": "leg"
+		}
+	],
+	"CombinedParameters": [
+		[
+			"ParamBreath",
+			"Param18"
+		]
+	]
+}
