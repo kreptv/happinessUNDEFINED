@@ -54,7 +54,7 @@ public class WaterRefillSource : MonoBehaviour
             if (testForWaterpot())
             {
                 //Debug.Log("Waterpot test");
-                if (Input.GetKeyDown(KeyCode.E))
+                if (Input.GetKeyDown(KeyCode.E) && KodaManager.instance.kodaCanMove)
                 {
                     //Debug.Log("Refilling water bucket");
 

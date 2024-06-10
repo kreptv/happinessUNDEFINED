@@ -23,7 +23,7 @@ public class InventoryScript : MonoBehaviour
     #endregion
 
     [SerializeField] private Transform[] pawTransform; // A transform where collected items will be placed
-    [SerializeField] private Transform sceneItemsTransform; // A transform where world items are placed
+    [SerializeField] public Transform sceneItemsTransform; // A transform where world items are placed
     private GameObject[] inventory = new GameObject[5];
     public int selectedIndex = 0; // -1 means no item is selected
     public GameObject selectedItem;

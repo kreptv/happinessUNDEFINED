@@ -142,7 +142,7 @@ public class FlowerPlot : MonoBehaviour
                     }
 
 
-                    if (Input.GetKeyDown(KeyCode.E))
+                    if (Input.GetKeyDown(KeyCode.E) && KodaManager.instance.kodaCanMove)
                     {
                         ActionTextUIScript.instance.BroadcastAction("Watering plant", false);
 
@@ -165,7 +165,7 @@ public class FlowerPlot : MonoBehaviour
                         lastSuccessfulTest = "seedtest";
                     }
 
-                    if (Input.GetKeyDown(KeyCode.E))
+                    if (Input.GetKeyDown(KeyCode.E) && KodaManager.instance.kodaCanMove)
                     {
                         ActionTextUIScript.instance.BroadcastAction("Planted seed", false);
                         seed = CopyItem(InventoryScript.instance.selectedItem.GetComponent<Seed>());
@@ -191,7 +191,7 @@ public class FlowerPlot : MonoBehaviour
                         lastSuccessfulTest = "harvesttest";
                     }
 
-                    if (Input.GetKeyDown(KeyCode.E))
+                    if (Input.GetKeyDown(KeyCode.E) && KodaManager.instance.kodaCanMove)
                     {
                         ActionTextUIScript.instance.BroadcastAction("Harvested plant", false);
 
