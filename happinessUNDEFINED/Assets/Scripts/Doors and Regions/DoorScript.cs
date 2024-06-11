@@ -10,11 +10,11 @@ public class DoorScript : MonoBehaviour
         public string toDoorName;
 
         public bool doorEnabled = true;
-    private bool playerInRange = false;
-
+        private bool playerInRange = false;
         public Collider thisDoorCollider;
-
         public Vector3 spawnLocation;
+
+        public InternalDialogue cantTravelDialogue = null;
 
     private void Awake()
     {
@@ -57,7 +57,14 @@ public class DoorScript : MonoBehaviour
             }
             else
             {
-                // cant tp
+                if (Input.GetKeyDown(KeyCode.Return) && (!InternalDialogueManager.instance.inDialogue))
+                {
+                        // cant tp
+                        if (cantTravelDialogue != null)
+                    {
+                        InternalDialogueManager.instance.StartDialogue(cantTravelDialogue);
+                    }
+                }
             }
         }
     }

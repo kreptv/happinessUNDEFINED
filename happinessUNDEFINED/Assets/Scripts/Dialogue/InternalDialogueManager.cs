@@ -6,6 +6,23 @@ using TMPro;
 public class InternalDialogueManager : MonoBehaviour
 {
 
+    #region Singleton
+    public static InternalDialogueManager instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(this);
+        }
+        DontDestroyOnLoad(this);
+    }
+    #endregion
+
     public GameObject InternalDialoguePopup;
 
     public TMP_Text dialogueText;
@@ -66,9 +83,21 @@ public class InternalDialogueManager : MonoBehaviour
 
     void EndDialogue()
     {
-        inDialogue = false;
+        StartCoroutine(DialogueCooldown());
         DialogueManager.instance.SetActiveOnScreenUI(true);
         DialogueManager.instance.GameWorldCanMove(true);
         InternalDialoguePopup.SetActive(false);
     }
+
+    private IEnumerator DialogueCooldown()
+    {
+        inDialogue = true;
+        yield return new WaitForSeconds(0.5f);
+        inDialogue = false;
+
+
+    }
+
+
+
 }

@@ -242,7 +242,16 @@ public class PlayerMovementScript : MonoBehaviour
         if (collision.gameObject.CompareTag("ground"))
         {
             isGrounded = true;
-            Debug.Log("Grounded");
+            //Debug.Log("Grounded");
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("ground"))
+        {
+            isGrounded = true;
+            //Debug.Log("Grounded");
         }
     }
 
@@ -251,7 +260,7 @@ public class PlayerMovementScript : MonoBehaviour
         if (collision.gameObject.CompareTag("ground"))
         {
             isGrounded = false;
-            Debug.Log("Not Grounded");
+            //Debug.Log("Not Grounded");
         }
     }
 

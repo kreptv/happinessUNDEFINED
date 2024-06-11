@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 public class QuestManager : MonoBehaviour
 {
@@ -27,6 +28,8 @@ public class QuestManager : MonoBehaviour
 
     public GameObject QuestJournal;
 
+    public GameObject NewQuestCanvas;
+
     private bool QuestJournalOpen;
 
 
@@ -40,6 +43,7 @@ public class QuestManager : MonoBehaviour
     {
         QuestJournalOpen = true;
         OpenQuestJournal();
+        NewQuestCanvas.SetActive(false);
     }
 
     private void Update()
@@ -82,7 +86,7 @@ public class QuestManager : MonoBehaviour
         }
         Debug.Log("Quest started: " + quest.questName);
 
-        GameObject instance = Instantiate(NewQuestPrefab, ContentTransform);
+        GameObject instance = Instantiate(NewQuestPrefab, ContentTransform); // instantiate under quest journal
         instance.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = quest.objectives[0].description; // Quest task text
         instance.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = quest.questName; // Quest task text
         instance.transform.GetChild(0).GetChild(3).GetComponent<TextMeshProUGUI>().text = quest.assigner; // Quest assigner text
@@ -96,7 +100,22 @@ public class QuestManager : MonoBehaviour
         {
             instance.transform.GetChild(0).GetChild(5).gameObject.SetActive(false);
         }
+
+        NewQuestCanvas.SetActive(true);
+        NewQuestCanvas.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = quest.questName; // set new quest canvas
+        StartCoroutine(PlayNewQuestCanvasAnimation());
     }
+
+    private IEnumerator PlayNewQuestCanvasAnimation()
+    {
+        NewQuestCanvas.GetComponent<Animator>().SetTrigger("Idle");
+
+        yield return new WaitForSeconds(2.0f);
+        NewQuestCanvas.SetActive(false);
+    }
+
+
+
 
     public void CompleteObjective(Quest quest, int objectiveIndex)
     {
