@@ -78,7 +78,7 @@ public class InventoryScript : MonoBehaviour
                 item.transform.localPosition = new Vector3(item.GetComponent<Item>().pawposition.x, item.GetComponent<Item>().pawposition.y, item.transform.localPosition.z);
 
             // if player grabs object while facing left, flip object
-                if (!PlayerMovementScript.facingRight){
+                if (!PlayerMovementScript.instance.facingRight){
                     item.GetComponent<SpriteRenderer>().flipX = true;
                     //item.transform.localScale = new Vector2(-item.transform.localScale.x, item.transform.localScale.y);
                 }

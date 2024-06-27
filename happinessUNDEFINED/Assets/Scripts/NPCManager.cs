@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class NPCManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    // Radiel
+        // Region & where is he located
+        // Transformation
+        // Expression
+        // Current dialogue
+        // Current quest
+
+    // Tavi
+
+    // 
+
+
+
 }

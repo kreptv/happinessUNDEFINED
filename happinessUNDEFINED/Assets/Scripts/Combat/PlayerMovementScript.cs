@@ -28,13 +28,13 @@ public class PlayerMovementScript : MonoBehaviour
 
     [HideInInspector] public static Rigidbody rb;
     private Vector3 movement;
-    private Region CurrentRegion;
+    public Region CurrentRegion;
     private Collider currentRegionMovementBoundary;
     //private static bool canMove;
     private bool isGrounded;
     private bool onAttackCooldown;
     public Animator myAnimator;
-    public static bool facingRight;
+    public bool facingRight;
     //public GameObject inventoryContainer;
     private bool onTeleportCooldown;
     public GameObject LoadingScreen;
@@ -282,6 +282,7 @@ public class PlayerMovementScript : MonoBehaviour
         // this.gameObject.GetComponent<Collider>().enabled = true;
 
         Debug.Log("Teleported to " + DoorObject.spawnLocation);
+        CameraScript.instance.spriteRenderers.AddRange(FindObjectsOfType<SpriteRenderer>());
     }
 
 

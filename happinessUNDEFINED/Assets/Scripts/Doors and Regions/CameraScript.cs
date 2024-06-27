@@ -30,8 +30,10 @@ public class CameraScript : MonoBehaviour
     [SerializeField] private float fadeDistance = 1.0f; // Distance at which sprites start to fade
     [SerializeField] private float disappearDistance = 0.5f; // Distance at which sprites disappear completely
 
-    private List<SpriteRenderer> spriteRenderers = new List<SpriteRenderer>();
+    [HideInInspector]  public List<SpriteRenderer> spriteRenderers = new List<SpriteRenderer>();
     private List<Collider> colliders = new List<Collider>();
+
+    public bool fixedPositionCamera;
 
     public static void UpdateSize(float size)
     {
@@ -48,10 +50,33 @@ public class CameraScript : MonoBehaviour
         // Get all sprite renderers and colliders in the scene
         spriteRenderers.AddRange(FindObjectsOfType<SpriteRenderer>());
         colliders.AddRange(FindObjectsOfType<Collider>());
+        fixedPositionCamera = false;
     }
 
     void LateUpdate()
     {
+
+        if (PlayerMovementScript.instance.CurrentRegion.isCameraFixedPosition)
+        {
+            if (!PlayerMovementScript.instance.CurrentRegion.cameraXIsFixedPosition)
+            {
+                Vector3 dPos= player.position + offset;
+                Vector3 smoPos= Vector3.Lerp(transform.position, dPos, smoothSpeed);
+
+                // Clamp the camera position to the PolygonCollider2D boundary
+                Vector3 claPos = ClampPositionToBoundary(smoPos);
+
+                transform.position = claPos;
+
+                transform.position = new Vector3(claPos.x, PlayerMovementScript.instance.CurrentRegion.fixedCameraPosition.y, PlayerMovementScript.instance.CurrentRegion.fixedCameraPosition.z);
+                return;
+            }
+
+
+            transform.position = PlayerMovementScript.instance.CurrentRegion.fixedCameraPosition;
+            return;
+        }
+
         Vector3 desiredPosition = player.position + offset;
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
 

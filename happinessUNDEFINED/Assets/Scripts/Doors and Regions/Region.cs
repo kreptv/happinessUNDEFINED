@@ -6,8 +6,12 @@ using UnityEngine;
 public class Region : MonoBehaviour
 {
         public string regionName;
-        
-        [HideInInspector] public Collider regionCollider;
+
+        public bool isCameraFixedPosition = false;
+        public Vector3 fixedCameraPosition;
+        public bool cameraXIsFixedPosition = false;
+
+    [HideInInspector] public Collider regionCollider;
     // parent of this gameobject is region
 
     [HideInInspector] public GameObject regionNPCS;
